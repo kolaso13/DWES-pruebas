@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\2daw3\\adrian\\dev\\desp\\proyecto\\proyecto.csproj": {}
+    "C:\\Users\\2daw3\\Adrian\\dev\\DESP\\proyecto\\proyecto.csproj": {}
   },
   "projects": {
-    "C:\\Users\\2daw3\\adrian\\dev\\desp\\proyecto\\proyecto.csproj": {
+    "C:\\Users\\2daw3\\Adrian\\dev\\DESP\\proyecto\\proyecto.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\2daw3\\adrian\\dev\\desp\\proyecto\\proyecto.csproj",
+        "projectUniqueName": "C:\\Users\\2daw3\\Adrian\\dev\\DESP\\proyecto\\proyecto.csproj",
         "projectName": "proyecto",
-        "projectPath": "C:\\Users\\2daw3\\adrian\\dev\\desp\\proyecto\\proyecto.csproj",
+        "projectPath": "C:\\Users\\2daw3\\Adrian\\dev\\DESP\\proyecto\\proyecto.csproj",
         "packagesPath": "C:\\Users\\2daw3\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\2daw3\\adrian\\dev\\desp\\proyecto\\obj\\",
+        "outputPath": "C:\\Users\\2daw3\\Adrian\\dev\\DESP\\proyecto\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\2daw3\\AppData\\Roaming\\NuGet\\NuGet.Config"
