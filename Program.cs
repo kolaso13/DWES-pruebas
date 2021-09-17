@@ -244,7 +244,7 @@ class PruebaPersona
 }*/
 
 //6.----------------------------------------------------------------------------------------------------
-
+/*
 using System.Collections.Generic;
 
 
@@ -291,3 +291,66 @@ using System.Collections.Generic;
             media += decimal.Parse(notas[i]["nota"].ToString());
         }
         Console.WriteLine(media / notas.Length);
+*/
+
+namespace Actividad6
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Sistema system = new Sistema();
+
+            Alumno A1 = new Alumno("Luis", 'H', 7.5M);
+            Alumno A2 = new Alumno("Marta", 'M', 4M);
+            Alumno A3 = new Alumno("Marcos", 'H', 6M);
+            Alumno A4 = new Alumno("Aroa", 'M', 5M);
+            Alumno A5 = new Alumno("Nerea", 'M', 4M);
+            Alumno A6 = new Alumno("Kike", 'H', 6.5M);
+            Alumno A7 = new Alumno("Juan", 'H', 7.5M);
+
+            Alumno[] notas = { A1, A2, A3, A4, A5, A6, A7 };
+
+
+            Console.WriteLine($"{(system.calcularMedia(notas)):0.00} ");
+            Console.WriteLine($"{(system.calcularAprobados(notas)):0.00} " + "%");
+        }
+    }
+}
+
+class Sistema
+{
+    public decimal calcularMedia(Alumno[] lista)
+    {
+        decimal resultado = 0M;
+        for (int i = 0; i < lista.Length; i++)
+            resultado += lista[i].nota;
+        return resultado / lista.Length;
+    }
+
+    public decimal calcularAprobados(Alumno[] lista)
+    {
+        decimal resultado = 0M;
+        int cantidadAprobados = 0;
+        for (int i = 0; i < lista.Length; i++)
+            if (lista[i].nota >= 5)
+                cantidadAprobados++;
+        resultado = (cantidadAprobados * 100) / lista.Length;
+        return resultado;
+    }
+
+
+}
+
+class Alumno
+{
+    String nombre;
+    char sexo;
+    public decimal nota;
+    public Alumno(String _nombre, char _sexo, decimal _nota)
+    {
+        nombre = _nombre;
+        sexo = _sexo;
+        nota = _nota;
+    }
+}
