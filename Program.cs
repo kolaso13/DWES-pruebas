@@ -255,36 +255,36 @@ using System.Collections.Generic;
         dLuis["nota"] = 7.5M;
 
         var dMarta = new Dictionary<string, object>();
-        dLuis["nombre"] = "Marta";
-        dLuis["sexo"] = 'M';
-        dLuis["nota"] = 4;
+        dMarta["nombre"] = "Marta";
+        dMarta["sexo"] = 'M';
+        dMarta["nota"] = 4;
 
         var dMarcos = new Dictionary<string, object>();
-        dLuis["nombre"] = "Marcos";
-        dLuis["sexo"] = 'H';
-        dLuis["nota"] = 6;
+        dMarcos["nombre"] = "Marcos";
+        dMarcos["sexo"] = 'H';
+        dMarcos["nota"] = 6;
 
         var dAroa = new Dictionary<string, object>();
-        dLuis["nombre"] = "Aroa";
-        dLuis["sexo"] = 'M';
-        dLuis["nota"] = 5;
+        dAroa["nombre"] = "Aroa";
+        dAroa["sexo"] = 'M';
+        dAroa["nota"] = 5;
 
         var dNerea = new Dictionary<string, object>();
-        dLuis["nombre"] = "Nerea";
-        dLuis["sexo"] = 'M';
-        dLuis["nota"] = 4;
+        dNerea["nombre"] = "Nerea";
+        dNerea["sexo"] = 'M';
+        dNerea["nota"] = 4;
 
         var dKike = new Dictionary<string, object>();
-        dLuis["nombre"] = "Kike";
-        dLuis["sexo"] = 'H';
-        dLuis["nota"] = 6.5M;
+        dKike["nombre"] = "Kike";
+        dKike["sexo"] = 'H';
+        dKike["nota"] = 6.5M;
 
         var dJuan = new Dictionary<string, object>();
-        dLuis["nombre"] = "Juan";
-        dLuis["sexo"] = 'H';
-        dLuis["nota"] = 7.5M;
+        dJuan["nombre"] = "Juan";
+        dJuan["sexo"] = 'H';
+        dJuan["nota"] = 7.5M;
 
-        var notas = new[] { dLuis,dMarta, dMarcos, dAroa, dNerea, dKike, dJuan};
+        var notas = new[] { dLuis, dMarta, dMarcos, dAroa, dNerea, dKike, dJuan};
         decimal media = 0M;
         for (int i = 0; i < notas.Length; i++)
         {
@@ -293,6 +293,8 @@ using System.Collections.Generic;
         Console.WriteLine(media / notas.Length);
 */
 
+//7---------------------------------------------------------------------------------------
+/*
 namespace Actividad6
 {
     class Program
@@ -354,3 +356,31 @@ class Alumno
         nota = _nota;
     }
 }
+*/
+
+//7.2--------------------------------------------------------------------------
+/*
+using System.Collections.Generic;
+using System.Linq;
+using System;
+
+public class Hello{
+    public static void Main(){
+        // Your code here!
+
+        System.Console.WriteLine("Hello C#");
+
+		Func<String, int> longitud = n => n.Length;
+        Func<int, bool> impar = n => n%2 != 0;
+		var suma = 0;
+		var myArray = new List<String>() {"Word", "Excel", "Access", "Powerpoint"};
+		var myArraymap = myArray.Select(longitud);
+		var filterArray = myArraymap.Where(impar);
+			foreach( int elem in filterArray ) suma = suma + elem;
+		Console.WriteLine("La suma de todos los impares es: "+suma);
+		
+		
+    }
+}
+
+*/
