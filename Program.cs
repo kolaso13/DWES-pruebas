@@ -1,7 +1,8 @@
-﻿using System;
+﻿
 
 //1---------------------------------------------------------
 /*
+using System;
 class Program{
      static void Main(string[] args)
     {
@@ -26,6 +27,7 @@ class Program{
 //2-------------------------------------------------------------
 
 /*
+using System;
 class Program
 {
     static void Main(string[] args)
@@ -51,6 +53,7 @@ class Program
 
 //3-------------------------------------------------------------
 /*
+using System;
 int cont;
 int i;
 int Porcentaje;
@@ -85,6 +88,7 @@ void Finalizacion()
 */
 //4-------------------------------------------------
 /*
+using System;
 int cont;
 int i;
 int Porcentaje;
@@ -109,6 +113,7 @@ Console.WriteLine(Operciones(notas) + "%");
 //5.1-----------------------------------------------------
 
 /*
+using System;
 (String,Char,Decimal) A1 =("Luis", 'H',7.1M);
 (String,Char,Decimal) A2 =("Marta", 'M',4);
 (String,Char,Decimal) A3 =("Marcos", 'H',6);
@@ -128,6 +133,7 @@ Console.WriteLine(media/notas.Length);
 //5.2---------------------------------------------------------
 
 /*
+using System;
 class Program
  {
      public struct Alumno
@@ -160,6 +166,7 @@ class Program
 */
 //5.3---------------------------------------------------------------------------
 /*
+using System;
 class Program
 {
     public record Person(string FirstName, Char LastName, decimal nota);
@@ -186,6 +193,7 @@ class Program
 */
 //5.4-------------------------------------------------------------------------------
 /*
+using System;
 class Persona
 {
     String _nombre;
@@ -245,6 +253,7 @@ class PruebaPersona
 
 //6.----------------------------------------------------------------------------------------------------
 /*
+using System;
 using System.Collections.Generic;
 
 
@@ -295,6 +304,7 @@ using System.Collections.Generic;
 
 //7---------------------------------------------------------------------------------------
 /*
+using System;
 namespace Actividad6
 {
     class Program
@@ -360,6 +370,7 @@ class Alumno
 
 //7.2--------------------------------------------------------------------------
 /*
+
 using System.Collections.Generic;
 using System.Linq;
 using System;
@@ -384,3 +395,146 @@ public class Hello{
 }
 
 */
+
+
+//8---------------------------------------------------------------
+/*
+PROGRAMACION CON ARQUITECTURA 
+Sistema
+Vista
+Controlador
+*/
+
+using System;
+using System.Linq;
+
+
+Console.WriteLine("Empezamos");
+
+Calificacion[] notas = new[] {
+        //Luis, Marta, Marcos, Aroa, Nerea, Kike, Juan
+        //7.5M, 4,     6,      5,    4,     6.5M, 7.5M 
+        new Calificacion("Luis", 7.5M),
+        new Calificacion("Marta", 4),
+        new Calificacion("Marcos", 6),
+        new Calificacion("Aroa", 5),
+        new Calificacion("Nerea", 4),
+        new Calificacion("Kike", 6.5M),
+        new Calificacion("Juan", 7.5M)
+    };
+
+var sistema = new Sistema(notas);
+var vista = new Vista();
+var controlador = new Controlador(sistema, vista);
+controlador.Run();
+Console.WriteLine("Fin");
+
+public class Vista
+{
+    public int obtenerEntero(string prompt)
+    {
+        int entero = int.MinValue;
+        string input = "";
+        bool entradaIncorrecta = true;
+        while (entradaIncorrecta)
+        {
+            try
+            {
+                Console.Write($"   {prompt.Trim()}: ");
+                input = Console.ReadLine();
+                if (input != "fin")
+                {
+                    entero = int.Parse(input);
+                    entradaIncorrecta = false;
+                }
+                else
+                {
+                    entero = int.MinValue;
+                    entradaIncorrecta = false;
+                }
+            }
+            catch (FormatException)
+            {
+                ;
+            }
+        }
+        return entero;
+    }
+    public int obtenerOpcion(string titulo, Object[] opciones, string prompt)
+    {
+        Console.WriteLine($"   === {titulo} ===");
+        Console.WriteLine();
+        for (int i = 0; i < opciones.Length; i++)
+        {
+            Console.WriteLine($"   {i + 1:##}.- {opciones[i]}");
+        }
+        Console.WriteLine();
+        return obtenerEntero(prompt);
+    }
+}
+
+public class Controlador
+{
+    string[] menu = new[]{
+       "Obtener la media de las notas",
+       "Obtener la mejor nota"
+       };
+    private Sistema sistema;
+    private Vista vista;
+    public Controlador(Sistema sistema, Vista vista)
+    {
+        this.sistema = sistema;
+        this.vista = vista;
+    }
+    public void Run()
+    {
+        while (true)
+        {
+            var opcion = vista.obtenerOpcion("Menu de Opciones", menu, "Seleciona una opción");
+            if (opcion==1){
+                obtenerLaMedia();
+            }
+            else if(opcion==2){
+                Console.WriteLine($"No implementado");
+            }
+            else{
+                return;
+            }
+            Console.WriteLine("\n\nPulsa Return para continuar");
+            Console.ReadLine();
+        }
+    }
+    public void obtenerLaMedia()
+    {
+        Console.WriteLine($"La media de la notas es: {sistema.CalculoDeLaMedia():0.00}");
+    }
+}
+
+public class Calificacion
+{
+    public string Nombre;
+    public decimal Nota;
+    public Calificacion(string nombre, decimal nota)
+    {
+        Nombre = nombre;
+        Nota = nota;
+    }
+    public override string ToString() => $"({Nombre}, {Nota})";
+}
+
+public class Sistema
+{
+    Calificacion[] Notas;
+
+    public Sistema(Calificacion[] notas)
+    {
+        Notas = notas;
+    }
+
+    private decimal CalculoDeLaSuma(decimal[] datos) => datos.Sum();
+    public decimal CalculoDeLaMedia()
+    {
+        var notas = Notas.Select(calificacion => calificacion.Nota).ToArray();
+        return CalculoDeLaSuma(notas) / Notas.Length;
+    }
+}
