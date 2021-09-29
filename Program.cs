@@ -404,7 +404,7 @@ Sistema
 Vista
 Controlador
 */
-
+/*
 using System;
 using System.Linq;
 
@@ -462,11 +462,11 @@ public class Vista
     }
     public int obtenerOpcion(string titulo, Object[] opciones, string prompt)
     {
-        Console.WriteLine($"   === {titulo} ===");
+        Console.WriteLine($"{titulo}");
         Console.WriteLine();
         for (int i = 0; i < opciones.Length; i++)
         {
-            Console.WriteLine($"   {i + 1:##}.- {opciones[i]}");
+            Console.WriteLine($"{i + 1:##}.- {opciones[i]}");
         }
         Console.WriteLine();
         return obtenerEntero(prompt);
@@ -536,5 +536,76 @@ public class Sistema
     {
         var notas = Notas.Select(calificacion => calificacion.Nota).ToArray();
         return CalculoDeLaSuma(notas) / Notas.Length;
+    }
+}
+
+
+*/
+
+//9-----------------------------------------------------------------------------------
+using System;
+using System.Linq;
+
+Calificacion[] notas = new[] {
+        //Luis, Marta, Marcos, Aroa, Nerea, Kike, Juan
+        //7.5M, 4,     6,      5,    4,     6.5M, 7.5M 
+        new Calificacion("Luis", 7.5M),
+        new Calificacion("Marta", 4),
+        new Calificacion("Marcos", 6),
+        new Calificacion("Aroa", 5),
+        new Calificacion("Nerea", 4),
+        new Calificacion("Kike", 6.5M),
+        new Calificacion("Juan", 7.5M)
+    };
+
+Controlador control = new Controlador();
+Sistema sistem = new Sistema();
+Vista vista = new Vista();
+
+control.Run();
+
+public class Controlador{
+    string[] menu = new[]{
+        "Obtener la media de las notas",
+        "Obtener la mejor nota"
+    };
+    public void Run(){
+        for(int i=0;i<menu.Length;i++){
+         Console.WriteLine(menu[i]);   
+        }
+    Console.ReadLine();
+    }
+}
+
+public class Calificacion{
+
+    private decimal Nota;
+    private String Nombre;
+
+    public  Calificacion(String nombre, decimal nota){
+        Nombre = nombre;
+        Nota = nota;
+    }
+}
+public class Sistema{
+
+}
+
+public class Vista{
+    public int obtenerOpcion(int OpcionIntroducida){
+        var opcion = 0;
+        switch (OpcionIntroducida)
+        {
+            case 1:
+            opcion = 1;
+            break;
+            
+            case 2:
+            opcion = 2;
+            break;
+
+            default:
+            Console.WriteLine("Opcion Incorrecta");
+        }
     }
 }
