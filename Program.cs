@@ -397,31 +397,47 @@ public class Hello{
 */
 
 
-//8---------------------------------------------------------------
-/*
-PROGRAMACION CON ARQUITECTURA 
-Sistema
-Vista
-Controlador
-*/
+//Ejercicio 8--------------------------------------------------------------------
 /*
 using System;
 using System.Linq;
 
+personas A1 = new personas();
+A1.nombre = "Luis";
+A1.sexo = 'H';
+A1.nota = 7.5M;
 
-Console.WriteLine("Empezamos");
+personas A2 = new personas();
+A2.nombre = "Marta";
+A2.sexo = 'M';
+A2.nota = 4;
 
-Calificacion[] notas = new[] {
-        //Luis, Marta, Marcos, Aroa, Nerea, Kike, Juan
-        //7.5M, 4,     6,      5,    4,     6.5M, 7.5M 
-        new Calificacion("Luis", 7.5M),
-        new Calificacion("Marta", 4),
-        new Calificacion("Marcos", 6),
-        new Calificacion("Aroa", 5),
-        new Calificacion("Nerea", 4),
-        new Calificacion("Kike", 6.5M),
-        new Calificacion("Juan", 7.5M)
-    };
+personas A3 = new personas();
+A3.nombre = "Marcos";
+A3.sexo = 'H';
+A3.nota = 6;
+
+personas A4 = new personas();
+A4.nombre = "Aroa";
+A4.sexo = 'M';
+A4.nota = 5;
+
+personas A5 = new personas();
+A5.nombre = "Nerea";
+A5.sexo = 'M';
+A5.nota = 4;
+
+personas A6 = new personas();
+A6.nombre = "Kike";
+A6.sexo = 'H';
+A6.nota = 6.5M;
+
+personas A7 = new personas();
+A7.nombre = "Juan";
+A7.sexo = 'H';
+A7.nota = 7.5M;
+
+var notas = new[] { A1, A2, A3, A4, A5, A6, A7 };
 
 var sistema = new Sistema(notas);
 var vista = new Vista();
@@ -429,183 +445,627 @@ var controlador = new Controlador(sistema, vista);
 controlador.Run();
 Console.WriteLine("Fin");
 
-public class Vista
-{
-    public int obtenerEntero(string prompt)
-    {
-        int entero = int.MinValue;
+//vista va a leer los datos k se metan
+
+public class Vista{
+    //Obtiene el dato introducido y mira si hay una opcion valida (esta funciona es llamada por getOpcion)
+    public int getInt(){
+
+        int opcion = 0;
         string input = "";
-        bool entradaIncorrecta = true;
-        while (entradaIncorrecta)
-        {
-            try
-            {
-                Console.Write($"   {prompt.Trim()}: ");
-                input = Console.ReadLine();
-                if (input != "fin")
-                {
-                    entero = int.Parse(input);
-                    entradaIncorrecta = false;
+        bool denegado = true;
+
+        do{
+            do{
+
+                try{
+                    input = Console.ReadLine();
+                    opcion = Convert.ToInt32(input);
+                    denegado = false;
+                }catch(FormatException){
+                    Console.WriteLine("Elija una opción");
                 }
-                else
-                {
-                    entero = int.MinValue;
-                    entradaIncorrecta = false;
-                }
+
+            }while(denegado);
+
+            if(opcion != 0 && opcion != 1 && opcion != 2){
+                Console.WriteLine("Esa opción no existe");
             }
-            catch (FormatException)
-            {
-                ;
-            }
-        }
-        return entero;
+
+        }while(opcion != 0 && opcion != 1 && opcion != 2);
+
+        return opcion;
     }
-    public int obtenerOpcion(string titulo, Object[] opciones, string prompt)
-    {
-        Console.WriteLine($"{titulo}");
-        Console.WriteLine();
-        for (int i = 0; i < opciones.Length; i++)
+    //Genera el menu mediante u for (Esta funcion es llamada en el run)
+    public int getOpcion(string[] menu){
+        Console.WriteLine("Menú:");
+        for (int i = 0; i < menu.Length; i++)
         {
-            Console.WriteLine($"{i + 1:##}.- {opciones[i]}");
+            if(i!= menu.Length - 1){
+                Console.WriteLine($"   {i + 1:##}.- {menu[i]}");
+            }else
+            {
+                Console.WriteLine($"   0.- {menu[i]}");
+            }
         }
-        Console.WriteLine();
-        return obtenerEntero(prompt);
+        Console.WriteLine("Elija su opción:");
+        return getInt();
     }
 }
 
-public class Controlador
-{
-    string[] menu = new[]{
-       "Obtener la media de las notas",
-       "Obtener la mejor nota"
-       };
+//controlador va a controlar todos los datos
+
+public class Controlador{
+    //Escribimos el menu que se escribira
+    String[] menu = new[]{
+        "Obtener la media de las notas",
+        "Obtener los suspensos",
+        "salir"
+    };
+
     private Sistema sistema;
     private Vista vista;
-    public Controlador(Sistema sistema, Vista vista)
-    {
+
+    public Controlador(Sistema sistema, Vista vista){
         this.sistema = sistema;
         this.vista = vista;
     }
-    public void Run()
-    {
-        while (true)
-        {
-            var opcion = vista.obtenerOpcion("Menu de Opciones", menu, "Seleciona una opción");
-            if (opcion==1){
-                obtenerLaMedia();
+
+    //Al ejecutar el programa
+    public void Run(){
+        while(true){
+
+            Console.Clear();
+            var opcion = vista.getOpcion(menu);
+
+            switch (opcion){
+                
+                case 1:
+                    getMedia();
+                    break;
+                case 2:
+                    getSuspensos();
+                    break;
+                case 0:
+                    return;
             }
-            else if(opcion==2){
-                Console.WriteLine($"No implementado");
-            }
-            else{
-                return;
-            }
+
             Console.WriteLine("\n\nPulsa Return para continuar");
             Console.ReadLine();
         }
     }
-    public void obtenerLaMedia()
-    {
-        Console.WriteLine($"La media de la notas es: {sistema.CalculoDeLaMedia():0.00}");
+    //Es llamada en el run y llama a la funcion nMedia que esta en sistema y con 2 decimales
+    public void getMedia(){
+        Console.WriteLine($"La media de la notas es: {sistema.nMedia():0.00}");
+    }
+    //Es llamada en el run y llama a pencardos que esta en sistema
+    public void getSuspensos(){
+        Console.WriteLine($"Los suspensos que han habido son: {sistema.pencardos()}");
+    }
+
+}
+
+//Se crea la clase persona la cual va a almacenar todos los datos de las personas que hemos delcarado arriba
+public class personas{
+    string _nombre;
+    decimal _nota;
+    char _sexo;
+    public string nombre{
+        get => _nombre;
+        set => _nombre = value;
+    }
+    public decimal nota{
+        get => _nota;
+        set => _nota = value;
+    }
+    public char sexo{
+        get => _sexo;
+        set => _sexo = value;
     }
 }
 
-public class Calificacion
+public class Sistema{
+    personas[] datos;
+    //Pasa las notas y las llama datos
+    public Sistema(personas[] datos){
+        this.datos = datos;
+    }
+    //Devuelve la cantidad de las notas que estan suspendidas
+    public int pencardos (){
+       Func<personas, bool> suspensos = (n) =>{
+        return n.nota < 5;
+        };
+
+        var pencos = datos.Where(suspensos).ToList();
+
+        return pencos.Count;
+    }
+    //Calcula la media de las notas introducidas
+    public decimal nMedia(){
+        Func<personas, decimal> lnotas = (n) =>{
+            return n.nota;
+        };
+
+        Func<decimal, decimal, decimal> lmedia = (siguiente, resp) =>{
+            return siguiente + resp;
+        };
+
+        var misNotas = datos.Select(lnotas);
+        var res = (misNotas.Aggregate(0M, lmedia)/datos.Length);
+        return res;
+    }
+
+}
+*/
+//ejercicio 9----------------------------------------------------------------------------
+
+
+using System;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
+using System.Globalization;
+
+var repositorio = new RepositorioCSV();
+var sistema = new Sistema(repositorio);
+var vista = new Vista();
+var controlador = new Controlador(sistema, vista);
+controlador.Run();
+Console.WriteLine("Fin");
+
+//vista va a leer los datos k se metan
+
+public class Vista{
+
+    public int getInt(){
+
+        int opcion = 0;
+        string input = "";
+        bool denegado = true;
+
+        do{
+            do{
+
+                try{
+                    input = Console.ReadLine();
+                    opcion = Convert.ToInt32(input);
+                    denegado = false;
+                }catch(FormatException){
+                    Console.WriteLine("Elija una opción");
+                }
+
+            }while(denegado);
+
+            if(opcion != 0 && opcion != 1 && opcion != 2){
+                Console.WriteLine("Esa opción no existe");
+            }
+
+        }while(opcion != 0 && opcion != 1 && opcion != 2);
+
+        return opcion;
+    }
+
+    public int getOpcion(string[] menu){
+        Console.WriteLine("Menú:");
+        for (int i = 0; i < menu.Length; i++)
+        {
+            if(i!= menu.Length - 1){
+                Console.WriteLine($"   {i + 1:##}.- {menu[i]}");
+            }else
+            {
+                Console.WriteLine($"   0.- {menu[i]}");
+            }
+        }
+        Console.WriteLine("Elija su opción:");
+        return getInt();
+    }
+}
+
+//controlador va a controlar todos los datos
+
+public class Controlador{
+    String[] menu = new[]{
+        "Obtener la media de las notas",
+        "Obtener los suspensos",
+        "salir"
+    };
+
+    private Sistema sistema;
+    private Vista vista;
+
+    public Controlador(Sistema sistema, Vista vista){
+        this.sistema = sistema;
+        this.vista = vista;
+    }
+
+    public void Run(){
+        while(true){
+
+            Console.Clear();
+            var opcion = vista.getOpcion(menu);
+
+            switch (opcion){
+                
+                case 1:
+                    getMedia();
+                    break;
+                case 2:
+                    getSuspensos();
+                    break;
+                case 0:
+                    return;
+            }
+
+            Console.WriteLine("\n\nPulsa Return para continuar");
+            Console.ReadLine();
+        }
+    }
+
+    public void getMedia(){
+        Console.WriteLine($"La media de la notas es: {sistema.nMedia():0.00}");
+    }
+
+    public void getSuspensos(){
+        Console.WriteLine($"Los suspensos que han habido son: {sistema.pencardos()}");
+    }
+
+}
+
+public class personas{
+    string _nombre;
+    decimal _nota;
+
+    public string nombre{
+        get => _nombre;
+        set => _nombre = value;
+    }
+    public decimal nota{
+        get => _nota;
+        set => _nota = value;
+    }
+
+    public override string ToString() => $"({_nombre}, {_nota})";
+
+    internal static personas ParseRow(string row)
+    {
+        NumberFormatInfo nfi = new CultureInfo( "en-US", false ).NumberFormat;
+
+        //Console.WriteLine(row);
+        var columns = row.Split(',');
+        return new personas()
+        {
+            _nombre = columns[0],
+            _nota = decimal.Parse(columns[1], nfi)
+        };
+
+    }
+}
+
+public class Sistema{
+
+    IRepositorio Repositorio;
+    personas[] datos;
+
+    public Sistema(IRepositorio repositorio)
+    {
+        Repositorio = repositorio;
+        Repositorio.Inicializar();
+        datos = Repositorio.CargarCalificaciones().ToArray(); //llamo a los datos conseguidos, convirtiendols en array y los guardo en datos
+    }
+
+    public int pencardos (){
+       Func<personas, bool> suspensos = (n) =>{
+        return n.nota < 5;
+        };
+
+        var pencos = datos.Where(suspensos).ToList();
+
+        return pencos.Count;
+    }
+
+    public decimal nMedia(){
+        Func<personas, decimal> lnotas = (n) =>{
+            return n.nota;
+        };
+
+        Func<decimal, decimal, decimal> lmedia = (siguiente, resp) =>{
+            return siguiente + resp;
+        };
+
+        var misNotas = datos.Select(lnotas);
+        var res = (misNotas.Aggregate(0M, lmedia)/datos.Length);
+        return res;
+    }
+
+}
+
+
+public interface IRepositorio //interfaz genérica que obliga a tener estos métodos a cualquier input de datos
 {
-    public string Nombre;
-    public decimal Nota;
-    public Calificacion(string nombre, decimal nota)
-    {
-        Nombre = nombre;
-        Nota = nota;
-    }
-    public override string ToString() => $"({Nombre}, {Nota})";
+    void Inicializar();
+    List<personas> CargarCalificaciones();
+
 }
 
-public class Sistema
+public class RepositorioCSV : IRepositorio
 {
-    Calificacion[] Notas;
-
-    public Sistema(Calificacion[] notas)
+    string datafile;
+    void IRepositorio.Inicializar()
     {
-        Notas = notas;
+        this.datafile = "alumnos.csv";
+    }
+    List<personas> IRepositorio.CargarCalificaciones()//aqui me devuelve una lista de personas en cuanto al csv que recoja
+    {
+        return File.ReadAllLines(datafile)
+            .Skip(1)
+            .Where(row => row.Length > 0)
+            .Select(personas.ParseRow).ToList();
     }
 
-    private decimal CalculoDeLaSuma(decimal[] datos) => datos.Sum();
-    public decimal CalculoDeLaMedia()
-    {
-        var notas = Notas.Select(calificacion => calificacion.Nota).ToArray();
-        return CalculoDeLaSuma(notas) / Notas.Length;
-    }
+
 }
 
+//10------------------------------------------------------------------------------------
+/*
+using System;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
+using System.Globalization;
+
+
+namespace Aplicacion
+{
+    using Services;
+    using Negocio;
+    using UI.Console;
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var repositorio = new RepositorioCSV();
+            var sistema = new Sistema(repositorio);
+            var vista = new Vista();
+            var controlador = new Controlador(sistema, vista);
+            Console.WriteLine("Inicializando aplicación");
+            controlador.Run();
+            Console.WriteLine("Finalizando aplicación");
+        }
+    }
+
+    namespace UI.Console
+    {
+        using System;
+        using Negocio.Modelos;
+
+        public class Vista
+        {
+
+            public int getInt()
+            {
+
+                int opcion = 0;
+                string input = "";
+                bool denegado = true;
+
+                do
+                {
+                    do
+                    {
+
+                        try
+                        {
+                            input = Console.ReadLine();
+                            opcion = Convert.ToInt32(input);
+                            denegado = false;
+                        }
+                        catch (FormatException)
+                        {
+                            Console.WriteLine("Elija una opción");
+                        }
+
+                    } while (denegado);
+
+                    if (opcion != 0 && opcion != 1 && opcion != 2)
+                    {
+                        Console.WriteLine("Esa opción no existe");
+                    }
+
+                } while (opcion != 0 && opcion != 1 && opcion != 2);
+
+                return opcion;
+            }
+
+            public int getOpcion(string[] menu)
+            {
+                Console.WriteLine("Menú:");
+                for (int i = 0; i < menu.Length; i++)
+                {
+                    if (i != menu.Length - 1)
+                    {
+                        Console.WriteLine($"   {i + 1:##}.- {menu[i]}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"   0.- {menu[i]}");
+                    }
+                }
+                Console.WriteLine("Elija su opción:");
+                return getInt();
+            }
+        }
+        public class Controlador
+        {
+            String[] menu = new[]{
+        "Obtener la media de las notas",
+        "Obtener los suspensos",
+        "salir"
+    };
+
+            private Sistema sistema;
+            private Vista vista;
+
+            public Controlador(Sistema sistema, Vista vista)
+            {
+                this.sistema = sistema;
+                this.vista = vista;
+            }
+
+            public void Run()
+            {
+                while (true)
+                {
+
+                    Console.Clear();
+                    var opcion = vista.getOpcion(menu);
+
+                    switch (opcion)
+                    {
+
+                        case 1:
+                            getMedia();
+                            break;
+                        case 2:
+                            getSuspensos();
+                            break;
+                        case 0:
+                            return;
+                    }
+
+                    Console.WriteLine("\n\nPulsa Return para continuar");
+                    Console.ReadLine();
+                }
+            }
+
+            public void getMedia()
+            {
+                Console.WriteLine($"La media de la notas es: {sistema.nMedia():0.00}");
+            }
+
+            public void getSuspensos()
+            {
+                Console.WriteLine($"Los suspensos que han habido son: {sistema.pencardos()}");
+            }
+
+        }
+    }
+    namespace Negocio
+    {
+        using Negocio.Modelos;
+        namespace Modelos
+        {
+            public class personas
+            {
+                string _nombre;
+                decimal _nota;
+
+                public string nombre
+                {
+                    get => _nombre;
+                    set => _nombre = value;
+                }
+                public decimal nota
+                {
+                    get => _nota;
+                    set => _nota = value;
+                }
+
+                public override string ToString() => $"({_nombre}, {_nota})";
+
+                internal static personas ParseRow(string row)
+                {
+                    NumberFormatInfo nfi = new CultureInfo("en-US", false).NumberFormat;
+
+                    //Console.WriteLine(row);
+                    var columns = row.Split(',');
+                    return new personas()
+                    {
+                        _nombre = columns[0],
+                        _nota = decimal.Parse(columns[1], nfi)
+                    };
+
+                }
+            }
+
+
+        }
+
+        public class Sistema
+        {
+
+            IRepositorio Repositorio;
+            personas[] datos;
+
+            public Sistema(IRepositorio repositorio)
+            {
+                Repositorio = repositorio;
+                Repositorio.Inicializar();
+                datos = Repositorio.CargarCalificaciones().ToArray(); //llamo a los datos conseguidos, convirtiendols en array y los guardo en datos
+            }
+
+            public int pencardos()
+            {
+                Func<personas, bool> suspensos = (n) =>
+                {
+                    return n.nota < 5;
+                };
+
+                var pencos = datos.Where(suspensos).ToList();
+
+                return pencos.Count;
+            }
+
+            public decimal nMedia()
+            {
+                Func<personas, decimal> lnotas = (n) =>
+                {
+                    return n.nota;
+                };
+
+                Func<decimal, decimal, decimal> lmedia = (siguiente, resp) =>
+                {
+                    return siguiente + resp;
+                };
+
+                var misNotas = datos.Select(lnotas);
+                var res = (misNotas.Aggregate(0M, lmedia) / datos.Length);
+                return res;
+            }
+
+        }
+
+    }
+    namespace Services
+    {
+        using Negocio.Modelos;
+
+        public interface IRepositorio //interfaz genérica que obliga a tener estos métodos a cualquier input de datos
+        {
+            void Inicializar();
+            List<personas> CargarCalificaciones();
+
+        }
+
+        public class RepositorioCSV : IRepositorio
+        {
+            string datafile;
+            void IRepositorio.Inicializar()
+            {
+                this.datafile = "alumnos.csv";
+            }
+            List<personas> IRepositorio.CargarCalificaciones()//aqui me devuelve una lista de personas en cuanto al csv que recoja
+            {
+                return File.ReadAllLines(datafile)
+                    .Skip(1)
+                    .Where(row => row.Length > 0)
+                    .Select(personas.ParseRow).ToList();
+            }
+
+
+        }
+    }
+}
 
 */
 
-//9-----------------------------------------------------------------------------------
-using System;
-using System.Linq;
-
-Calificacion[] notas = new[] {
-        //Luis, Marta, Marcos, Aroa, Nerea, Kike, Juan
-        //7.5M, 4,     6,      5,    4,     6.5M, 7.5M 
-        new Calificacion("Luis", 7.5M),
-        new Calificacion("Marta", 4),
-        new Calificacion("Marcos", 6),
-        new Calificacion("Aroa", 5),
-        new Calificacion("Nerea", 4),
-        new Calificacion("Kike", 6.5M),
-        new Calificacion("Juan", 7.5M)
-    };
-
-Controlador control = new Controlador();
-Sistema sistem = new Sistema();
-Vista vista = new Vista();
-
-control.Run();
-
-public class Controlador{
-    string[] menu = new[]{
-        "Obtener la media de las notas",
-        "Obtener la mejor nota"
-    };
-    public void Run(){
-        for(int i=0;i<menu.Length;i++){
-         Console.WriteLine(menu[i]);   
-        }
-    Console.ReadLine();
-    }
-}
-
-public class Calificacion{
-
-    private decimal Nota;
-    private String Nombre;
-
-    public  Calificacion(String nombre, decimal nota){
-        Nombre = nombre;
-        Nota = nota;
-    }
-}
-public class Sistema{
-
-}
-
-public class Vista{
-    public int obtenerOpcion(int OpcionIntroducida){
-        var opcion = 0;
-        switch (OpcionIntroducida)
-        {
-            case 1:
-            opcion = 1;
-            break;
-            
-            case 2:
-            opcion = 2;
-            break;
-
-            default:
-            Console.WriteLine("Opcion Incorrecta");
-        }
-    }
-}
+//resumen de lo aprendido----------------
